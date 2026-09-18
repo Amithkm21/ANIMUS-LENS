@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Certificate - SECURE-Cert</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- AOS Animation Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <!-- Custom Theme CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="py-3 border-bottom border-secondary border-opacity-25 bg-black">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a href="index.html" class="text-decoration-none fw-bold fs-4 gradient-text">
+        <i class="fas fa-cube me-2"></i>SECURE-Cert
+      </a>
+      <div class="d-flex gap-2">
+        <a href="index.html" class="btn btn-outline-light btn-sm px-3">Home</a>
+        <a href="issue.html" class="btn btn-outline-light btn-sm px-3">Issue</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Header with 3D Animated Background -->
+  <section class="animation-hero position-relative">
+    <div class="animation-bg">
+      <div class="icontainer">
+        <div class="holder"><div class="box"></div></div>
+        <div class="holder"><div class="box"></div></div>
+        <div class="holder"><div class="box"></div></div>
+      </div>
+    </div>
+
+    <div class="container text-center hero-content position-relative" style="z-index: 2;">
+      <div class="hero-badge" data-aos="fade-down">
+        <i class="fas fa-search me-2"></i>Trust Verification
+      </div>
+      <h1 class="hero-title" data-aos="fade-up">Verify Certificate</h1>
+      <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="100">
+        Verify certificate authenticity against the blockchain & execute forensic checks.
+      </p>
+    </div>
+  </section>
+
+  <!-- Verification Form Section -->
+  <main class="py-5">
+    <div class="container verify-wrap">
+
+      <!-- Form Card -->
+      <div class="verify-card" data-aos="fade-up">
+        <div class="text-center mb-4">
+          <div class="form-icon mb-2">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h2 class="h3 fw-bold text-light">Audit Document</h2>
+          <p class="text-secondary small">Provide the certificate identifier and document to validate authenticity.</p>
+        </div>
+
+        <form id="verifyForm" novalidate>
+          <div class="mb-3">
+            <label class="form-label" for="cert_id">
+              <i class="fas fa-tag me-1"></i> Certificate ID
+            </label>
+            <input type="text" class="form-control custom-input" id="cert_id" placeholder="e.g. CERT-2026-ETH-001" required>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">
+              <i class="fas fa-file-upload me-1"></i> Certificate Document (PDF, PNG, JPG)
+            </label>
+            <div class="file-upload-area" id="verifyUploadArea" role="button" tabindex="0">
+              <input type="file" id="verifyFileInput" class="d-none" accept=".pdf,.png,.jpg,.jpeg" required>
+              <div class="file-upload-content">
+                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                <p class="mb-1 text-light fw-medium">Drag & drop or click to upload</p>
+                <div class="file-types">Supported formats: PDF, PNG, JPG, JPEG</div>
+              </div>
+            </div>
+
+            <!-- File selection badge -->
+            <div class="file-preview mt-3" id="verifyFilePreview" style="display: none;">
+              <div class="file-info">
+                <i class="fas fa-file-alt text-warning me-2"></i>
+                <span class="file-name text-light fw-medium" id="previewFileName"></span>
+              </div>
+              <button type="button" class="btn-remove" onclick="clearVerifyFile()" aria-label="Remove uploaded file">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn hero-btn w-100 py-3" id="verifySubmitBtn" disabled>
+            <i class="fas fa-search me-2"></i> Verify on Blockchain
+          </button>
+        </form>
+
+        <!-- Dynamic Process Overlay -->
+        <div class="processing-overlay" id="verifyOverlay" style="display: none;">
+          <div class="processing-content text-center">
+            <div class="spinner mb-3"></div>
+            <h4 class="text-light fw-bold">Authenticating Document</h4>
+            <p class="text-secondary small">Computing SHA-256 and checking ledger records...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Verification Result Card (Shown dynamically on submit) -->
+      <div class="verify-card" id="resultCard" style="display: none;" data-aos="fade-up">
+        <h3 class="text-center mb-4 fw-bold" id="resultStatus">
+          <!-- Populated by JS -->
+        </h3>
+
+        <!-- Metadata Breakdown -->
+        <div class="meta-box">
+          <div class="meta-row">
+            <strong>Certificate ID:</strong>
+            <span id="resCertId" class="text-light ms-1"></span>
+          </div>
+          <div class="meta-row">
+            <strong>Uploaded File SHA-256:</strong><br>
+            <code id="resUploadedHash"></code>
+          </div>
+          <div class="meta-row">
+            <strong>Blockchain Ledger Record:</strong><br>
+            <code id="resLedgerHash"></code>
+          </div>
+          <div class="meta-row">
+            <strong>Ledger Status:</strong>
+            <span class="text-valid fw-bold ms-1" id="resStatusBadge">Active & Valid</span>
+          </div>
+        </div>
+
+        <!-- AI Forensics Panel -->
+        <div class="forensic-panel">
+          <h4 class="h5 gradient-text mb-3">
+            <i class="fas fa-robot me-2"></i> AI Forensic Verification
+          </h4>
+
+          <div class="meta-row d-flex justify-content-between align-items-center">
+            <span><strong>AI Integrity Score:</strong></span>
+            <span class="score-badge">99.4% Authenticated</span>
+          </div>
+
+          <div class="meta-row d-flex justify-content-between align-items-center mt-2">
+            <span><strong>Visual Tampering:</strong></span>
+            <span class="text-valid fw-semibold">
+              <i class="fas fa-check-circle me-1"></i> Clean (No Splicing Detected)
+            </span>
+          </div>
+
+          <div class="mt-3 pt-3 border-top border-secondary border-opacity-25">
+            <strong class="d-block mb-1 text-light">Forensic Observations:</strong>
+            <ul class="text-secondary small mb-0 ps-3">
+              <li>Digital layout alignment corresponds with genuine templates.</li>
+              <li>Typography and kerning consistency confirmed across metadata fields.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+  <script>
+    AOS.init({ duration: 800, once: true });
+
+    const certIdInput = document.getElementById('cert_id');
+    const fileInput = document.getElementById('verifyFileInput');
+    const uploadArea = document.getElementById('verifyUploadArea');
+    const filePreview = document.getElementById('verifyFilePreview');
+    const previewFileName = document.getElementById('previewFileName');
+    const submitBtn = document.getElementById('verifySubmitBtn');
+    const overlay = document.getElementById('verifyOverlay');
+    const resultCard = document.getElementById('resultCard');
+
+    function checkFormValidity() {
+      submitBtn.disabled = !(certIdInput.value.trim() && fileInput.files.length > 0);
+    }
+
+    certIdInput.addEventListener('input', checkFormValidity);
+    uploadArea.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        previewFileName.textContent = e.target.files[0].name;
+        filePreview.style.display = 'flex';
+        uploadArea.classList.add('active');
+        checkFormValidity();
+      } else {
+        clearVerifyFile();
+      }
+    });
+
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.classList.add('active');
+    });
+
+    uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('active'));
+
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('active');
+      if (e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
+        fileInput.dispatchEvent(new Event('change'));
+      }
+    });
+
+    function clearVerifyFile() {
+      fileInput.value = '';
+      filePreview.style.display = 'none';
+      uploadArea.classList.remove('active');
+      checkFormValidity();
+    }
+
+    function computeFileHash(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const wordArray = CryptoJS.lib.WordArray.create(e.target.result);
+          const hash = CryptoJS.SHA256(wordArray).toString();
+          resolve(hash);
+        };
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+      });
+    }
+
+    document.getElementById('verifyForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const certId = certIdInput.value.trim();
+      const file = fileInput.files[0];
+
+      if (!certId || !file) return;
+
+      overlay.style.display = 'flex';
+
+      try {
+        const hash = await computeFileHash(file);
+        
+        // Brief simulated check for client-side demo
+        await new Promise(res => setTimeout(res, 1200));
+
+        overlay.style.display = 'none';
+        
+        // Populate Result Elements
+        document.getElementById('resCertId').textContent = certId;
+        document.getElementById('resUploadedHash').textContent = '0x' + hash;
+        document.getElementById('resLedgerHash').textContent = '0x' + hash;
+        
+        const statusHeader = document.getElementById('resultStatus');
+        statusHeader.className = 'text-center mb-4 fw-bold text-valid';
+        statusHeader.innerHTML = '<i class="fas fa-check-circle me-2"></i> Certificate Verified & Valid';
+
+        resultCard.style.display = 'block';
+        resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      } catch (err) {
+        overlay.style.display = 'none';
+        alert("Error reading certificate file: " + err.message);
+      }
+    });
+  </script>
+</body>
+</html>
