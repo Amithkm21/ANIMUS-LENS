@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Issue Certificate - SECURE-Cert</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- AOS Animations -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <!-- Shared Gold/Black/White Theme -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="py-3 border-bottom border-secondary border-opacity-25 bg-black">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a href="index.html" class="text-decoration-none fw-bold fs-4 gradient-text">
+        <i class="fas fa-cube me-2"></i>SECURE-Cert
+      </a>
+      <div class="d-flex gap-2">
+        <a href="index.html" class="btn btn-outline-light btn-sm px-3">Home</a>
+        <a href="verify.html" class="btn btn-outline-light btn-sm px-3">Verify</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Header with 3D Boxes -->
+  <section class="animation-hero position-relative">
+    <div class="animation-bg">
+      <div class="icontainer">
+        <div class="holder"><div class="box"></div></div>
+        <div class="holder"><div class="box"></div></div>
+        <div class="holder"><div class="box"></div></div>
+      </div>
+    </div>
+
+    <div class="container text-center hero-content position-relative" style="z-index: 2;">
+      <div class="hero-badge" data-aos="fade-down">
+        <i class="fas fa-shield-alt me-2"></i>Blockchain Ledger
+      </div>
+      <h1 class="hero-title" data-aos="fade-up">Issue a Certificate</h1>
+      <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="100">
+        Generate a SHA-256 fingerprint and record it permanently on the ledger.
+      </p>
+    </div>
+  </section>
+
+  <!-- Form Section -->
+  <section class="form-section py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7">
+          <div class="form-container" data-aos="fade-up">
+            
+            <div class="form-header text-center mb-4">
+              <div class="form-icon mb-2">
+                <i class="fas fa-plus-circle"></i>
+              </div>
+              <h2 class="h3 fw-bold text-light">Issue New Certificate</h2>
+              <p class="text-secondary small">Fill in the certificate metadata and attach your document.</p>
+            </div>
+
+            <form id="issueForm" novalidate>
+              <!-- Certificate ID Input -->
+              <div class="mb-3">
+                <label class="form-label" for="cert_id">
+                  <i class="fas fa-tag me-1"></i> Certificate ID
+                </label>
+                <input type="text" name="cert_id" id="cert_id" class="form-control custom-input" placeholder="e.g. CERT-2026-ETH-001" required>
+                <div class="form-help">Unique cryptographic identifier for this record.</div>
+              </div>
+
+              <!-- Metadata / Note Input -->
+              <div class="mb-4">
+                <label class="form-label" for="txid_note">
+                  <i class="fas fa-sticky-note me-1"></i> Optional Note / Metadata
+                </label>
+                <input type="text" name="txid_note" id="txid_note" class="form-control custom-input" placeholder="e.g. Issued to Amith Murali - B.C.A. Graduate">
+                <div class="form-help">Arbitrary contextual details stored alongside the hash.</div>
+              </div>
+
+              <!-- Drag and Drop Upload Area -->
+              <div class="mb-4">
+                <label class="form-label">
+                  <i class="fas fa-file-upload me-1"></i> Certificate File
+                </label>
+                <div class="file-upload-area" id="fileUploadArea" role="button" tabindex="0">
+                  <input type="file" name="file" id="fileInput" class="d-none" accept=".pdf,.jpg,.jpeg,.png">
+                  <div class="file-upload-content">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <p class="mb-1 text-light fw-medium">Drag & drop or click to upload</p>
+                    <div class="file-types">Supported formats: PDF, JPG, JPEG, PNG</div>
+                  </div>
+                </div>
+
+                <!-- Selected File Display -->
+                <div class="file-preview mt-3" id="filePreview" style="display: none;">
+                  <div class="file-info">
+                    <i class="fas fa-file-alt text-warning me-2"></i>
+                    <span class="file-name text-light fw-medium"></span>
+                    <span class="file-size text-secondary small ms-2"></span>
+                  </div>
+                  <button type="button" class="btn-remove" onclick="removeFile()" aria-label="Remove uploaded file">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="btn hero-btn w-100 py-3" id="submitBtn" disabled>
+                <i class="fas fa-cube me-2"></i> Issue Certificate on Blockchain
+              </button>
+            </form>
+
+            <!-- Processing Modal / Overlay -->
+            <div class="processing-overlay" id="processingOverlay" style="display: none;">
+              <div class="processing-content">
+                <div class="spinner mb-3"></div>
+                <h4 class="text-light fw-bold">Processing Transaction</h4>
+                <p class="text-secondary small">Please confirm the request in your Web3 wallet...</p>
+                <div class="processing-steps text-start mt-3">
+                  <div class="step" id="stepHash"><i class="fas fa-calculator me-2"></i> 1. Computing SHA-256 Hash</div>
+                  <div class="step" id="stepMetaMask"><i class="fas fa-wallet me-2"></i> 2. Awaiting Wallet Approval</div>
+                  <div class="step" id="stepBlockchain"><i class="fas fa-link me-2"></i> 3. Confirming on Blockchain</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Toast Messages -->
+            <div id="statusMessage" class="toast-container mt-4"></div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- External Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.7.0/dist/web3.min.js"></script>
+
+  <script>
+    AOS.init({ duration: 800, once: true });
+
+    // Client-side Fallbacks for Configs (Frontend Demo Mode)
+    const contractAddress = "0x0000000000000000000000000000000000000000";
+    const contractAbi = [];
+
+    // DOM Elements
+    const fileInput = document.getElementById('fileInput');
+    const fileUploadArea = document.getElementById('fileUploadArea');
+    const filePreview = document.getElementById('filePreview');
+    const submitBtn = document.getElementById('submitBtn');
+    const certIdInput = document.getElementById('cert_id');
+    const statusMessage = document.getElementById('statusMessage');
+    const processingOverlay = document.getElementById('processingOverlay');
+    const stepHash = document.getElementById('stepHash');
+    const stepMetaMask = document.getElementById('stepMetaMask');
+    const stepBlockchain = document.getElementById('stepBlockchain');
+
+    function updateSubmitButton() {
+      const isValid = certIdInput.value.trim() !== '' && fileInput.files.length > 0;
+      submitBtn.disabled = !isValid;
+    }
+
+    certIdInput.addEventListener('input', updateSubmitButton);
+    fileUploadArea.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        document.querySelector('.file-name').textContent = file.name;
+        document.querySelector('.file-size').textContent = `(${(file.size / 1024).toFixed(2)} KB)`;
+        filePreview.style.display = 'flex';
+        fileUploadArea.classList.add('active');
+        updateSubmitButton();
+      } else {
+        removeFile();
+      }
+    });
+
+    fileUploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      fileUploadArea.classList.add('active');
+    });
+
+    fileUploadArea.addEventListener('dragleave', () => fileUploadArea.classList.remove('active'));
+
+    fileUploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      fileUploadArea.classList.remove('active');
+      if (e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
+        fileInput.dispatchEvent(new Event('change'));
+      }
+    });
+
+    function removeFile() {
+      fileInput.value = '';
+      filePreview.style.display = 'none';
+      fileUploadArea.classList.remove('active');
+      updateSubmitButton();
+    }
+
+    function showMessage(type, message, txHash = null) {
+      statusMessage.innerHTML = '';
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `custom-toast ${type}`;
+      messageDiv.innerHTML = `
+        <div class="d-flex align-items-start gap-2">
+          <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} mt-1"></i>
+          <div class="flex-grow-1">
+            <div>${message}</div>
+            ${txHash ? `
+              <div class="mt-1 font-monospace small text-truncate" style="max-width: 320px;">Tx: ${txHash}</div>
+              <a href="https://sepolia.etherscan.io/tx/${txHash}" target="_blank" class="small text-warning text-decoration-none">
+                <i class="fas fa-external-link-alt"></i> View on Etherscan
+              </a>
+            ` : ''}
+          </div>
+          <button class="toast-close-btn" onclick="this.parentElement.parentElement.remove()">&times;</button>
+        </div>
+      `;
+      statusMessage.appendChild(messageDiv);
+      if (type === 'error') setTimeout(() => messageDiv.remove(), 6000);
+    }
+
+    function computeFileHash(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const wordArray = CryptoJS.lib.WordArray.create(e.target.result);
+          const hash = CryptoJS.SHA256(wordArray).toString();
+          resolve(hash);
+        };
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+      });
+    }
+
+    document.getElementById('issueForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const certId = certIdInput.value.trim();
+      const file = fileInput.files[0];
+
+      if (!certId || !file) {
+        showMessage('error', 'Please provide a Certificate ID and select a document.');
+        return;
+      }
+
+      processingOverlay.style.display = 'flex';
+      stepHash.classList.add('active');
+
+      try {
+        // Step 1: Compute real client-side SHA-256 hash
+        const hash = await computeFileHash(file);
+        stepHash.classList.remove('active');
+        stepMetaMask.classList.add('active');
+
+        // Step 2 & 3: Simulate blockchain deployment
+        await new Promise(resolve => setTimeout(resolve, 1200));
+        stepMetaMask.classList.remove('active');
+        stepBlockchain.classList.add('active');
+
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // Generate synthetic mock transaction hash for front-end demonstration
+        const mockTxHash = "0x" + Array.from({length: 64}, () => Math.floor(Math.random()*16).toString(16)).join('');
+
+        processingOverlay.style.display = 'none';
+        showMessage('success', `Certificate issued successfully! (Hash: ${hash.substring(0, 10)}...)`, mockTxHash);
+        removeFile();
+        certIdInput.value = '';
+        document.getElementById('txid_note').value = '';
+      } catch (err) {
+        showMessage('error', `Issuance simulation failed: ${err.message}`);
+      } finally {
+        processingOverlay.style.display = 'none';
+        stepHash.classList.remove('active');
+        stepMetaMask.classList.remove('active');
+        stepBlockchain.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>
