@@ -31,19 +31,6 @@ body {
   color: transparent;
 }
 
-.hero-badge {
-  display: inline-block;
-  padding: 0.5rem 1.25rem;
-  background: rgba(212, 175, 55, 0.1);
-  color: var(--gold-primary);
-  border: 1px solid var(--gold-primary);
-  border-radius: 50px;
-  margin-bottom: 1.25rem;
-  font-weight: 600;
-  font-size: 0.9rem;
-  letter-spacing: 0.5px;
-}
-
 .hero-btn {
   background: var(--gold-primary);
   color: var(--black-bg);
