@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Help & Support - SECURE-Cert</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- AOS Animations -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <!-- Shared Gold/Black/White Theme -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- Shared Header -->
+  <header class="py-3 border-bottom border-secondary border-opacity-25 bg-black">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a href="index.html" class="text-decoration-none fw-bold fs-4 gradient-text">
+        <i class="fas fa-cube me-2"></i>SECURE-Cert
+      </a>
+      <div class="d-flex gap-2">
+        <a href="index.html" class="btn btn-outline-light btn-sm px-3">Home</a>
+        <a href="issue.html" class="btn btn-outline-light btn-sm px-3">Issue</a>
+        <a href="verify.html" class="btn btn-outline-light btn-sm px-3">Verify</a>
+        <a href="contract_info.html" class="btn btn-outline-light btn-sm px-3">Contract</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Breadcrumb Navigation -->
+  <div class="breadcrumb-custom">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Help & Support</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Hero Section with 3D Boxes & Live Search -->
+  <section class="animation-hero position-relative">
+    <div class="animation-bg">
+      <div class="icontainer">
+        <div class="holder"><div class="box"></div></div>
+        <div class="holder"><div class="box"></div></div>
+        <div class="holder"><div class="box"></div></div>
+      </div>
+    </div>
+
+    <div class="container text-center position-relative" style="z-index: 2;">
+      <div class="hero-badge" data-aos="fade-down">
+        <i class="fas fa-question-circle me-2"></i>Knowledge Base
+      </div>
+      <h1 class="hero-title" data-aos="fade-up">Help & Support</h1>
+      <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="100">
+        Guides, step-by-step tutorials, and architectural insights for the SECURE-Cert blockchain platform.
+      </p>
+
+      <!-- Live Search Box -->
+      <div class="search-box" data-aos="fade-up" data-aos-delay="200">
+        <div class="search-input-wrapper">
+          <input type="text" id="helpSearch" placeholder="Search topics, tutorials, FAQs..." aria-label="Search help topics">
+          <i class="fas fa-search search-icon"></i>
+        </div>
+        <div class="search-results" id="searchResults"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Help Topic Cards -->
+  <section class="py-5" style="background-color: var(--black-bg);">
+    <div class="container">
+      <div class="text-center mb-5" data-aos="fade-up">
+        <h2 class="section-title">Quick Help Topics</h2>
+        <p class="section-subtitle">Jump directly to common tasks</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="help-card">
+            <div class="help-card-icon"><i class="fas fa-plus-circle"></i></div>
+            <h4 class="fw-bold mb-2">Issue Certificate</h4>
+            <p class="text-secondary small mb-4">Learn how to calculate SHA-256 hashes and deploy records to Ethereum.</p>
+            <a href="#tutorial-issue" class="help-link">View Tutorial <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="help-card">
+            <div class="help-card-icon"><i class="fas fa-search"></i></div>
+            <h4 class="fw-bold mb-2">Verify Certificate</h4>
+            <p class="text-secondary small mb-4">Verify certificate authenticity and review automated visual forensics reports.</p>
+            <a href="#tutorial-verify" class="help-link">View Tutorial <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+          <div class="help-card">
+            <div class="help-card-icon"><i class="fas fa-wallet"></i></div>
+            <h4 class="fw-bold mb-2">MetaMask Setup</h4>
+            <p class="text-secondary small mb-4">Configure your Web3 wallet for the Sepolia testnet to authorize transactions.</p>
+            <a href="#metamask-setup" class="help-link">Setup Guide <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+          <div class="help-card">
+            <div class="help-card-icon"><i class="fas fa-file-contract"></i></div>
+            <h4 class="fw-bold mb-2">Contract Details</h4>
+            <p class="text-secondary small mb-4">Review smart contract source code, methods, and Sepolia deployment records.</p>
+            <a href="contract_info.html" class="help-link">Contract Info <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+          <div class="help-card">
+            <div class="help-card-icon"><i class="fas fa-question"></i></div>
+            <h4 class="fw-bold mb-2">Common FAQs</h4>
+            <p class="text-secondary small mb-4">Answers regarding gas fees, supported file extensions, and cryptographic security.</p>
+            <a href="#faq" class="help-link">View FAQs <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+          <div class="help-card">
+            <div class="help-card-icon"><i class="fas fa-headset"></i></div>
+            <h4 class="fw-bold mb-2">Technical Support</h4>
+            <p class="text-secondary small mb-4">Connect with engineering support for smart contract or API issues.</p>
+            <a href="#contact" class="help-link">Get Support <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step-by-Step Tutorials -->
+  <section class="py-5" id="tutorials" style="background-color: var(--black-bg);">
+    <div class="container">
+      <div class="text-center mb-5" data-aos="fade-up">
+        <h2 class="section-title">Step-by-Step Tutorials</h2>
+        <p class="section-subtitle">Click any step to copy instructions to clipboard</p>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <!-- Issue Tutorial -->
+          <div class="tutorial-card" id="tutorial-issue" data-aos="fade-up">
+            <div class="tutorial-header">
+              <div class="tutorial-number">1</div>
+              <h4 class="fw-bold m-0 text-light">Issuing a New Certificate</h4>
+            </div>
+            <ol class="tutorial-steps">
+              <li><i class="fas fa-check-circle"></i>Navigate to the "Issue Certificate" interface.</li>
+              <li><i class="fas fa-check-circle"></i>Provide a unique Certificate Identifier (e.g. CERT-2026-ETH-001).</li>
+              <li><i class="fas fa-check-circle"></i>Upload the document file (PDF, JPG, or PNG format).</li>
+              <li><i class="fas fa-check-circle"></i>Review SHA-256 client-side hash computation.</li>
+              <li><i class="fas fa-check-circle"></i>Confirm the transaction in your MetaMask wallet on Sepolia.</li>
+              <li><i class="fas fa-check-circle"></i>Save the returned Ethereum transaction hash for audit records.</li>
+            </ol>
+          </div>
+
+          <!-- Verify Tutorial -->
+          <div class="tutorial-card" id="tutorial-verify" data-aos="fade-up">
+            <div class="tutorial-header">
+              <div class="tutorial-number">2</div>
+              <h4 class="fw-bold m-0 text-light">Verifying an Issued Document</h4>
+            </div>
+            <ol class="tutorial-steps">
+              <li><i class="fas fa-check-circle"></i>Open the "Verify Certificate" interface.</li>
+              <li><i class="fas fa-check-circle"></i>Type in the target Certificate ID.</li>
+              <li><i class="fas fa-check-circle"></i>Upload the physical or digital document file to evaluate.</li>
+              <li><i class="fas fa-check-circle"></i>The system calculates the document hash and queries the blockchain record.</li>
+              <li><i class="fas fa-check-circle"></i>Match validation and visual AI forensics are generated automatically.</li>
+            </ol>
+          </div>
+
+          <!-- MetaMask Tutorial -->
+          <div class="tutorial-card" id="metamask-setup" data-aos="fade-up">
+            <div class="tutorial-header">
+              <div class="tutorial-number">3</div>
+              <h4 class="fw-bold m-0 text-light">MetaMask Configuration (Sepolia Testnet)</h4>
+            </div>
+            <ol class="tutorial-steps">
+              <li><i class="fas fa-check-circle"></i>Install the MetaMask extension from the official site.</li>
+              <li><i class="fas fa-check-circle"></i>Enable test networks in your wallet advanced settings.</li>
+              <li><i class="fas fa-check-circle"></i>Switch network to "Sepolia Test Network".</li>
+              <li><i class="fas fa-check-circle"></i>Acquire free test ETH from a Sepolia faucet to fund transaction gas.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Frequently Asked Questions -->
+  <section class="py-5" id="faq" style="background-color: var(--black-bg);">
+    <div class="container">
+      <div class="text-center mb-5" data-aos="fade-up">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-subtitle">Clear explanations of platform mechanics</p>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="faq-item" data-aos="fade-up">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              What is blockchain certificate verification?
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+              <p>It creates a unique mathematical cryptographic fingerprint (SHA-256 hash) of your certificate and stores only that fingerprint on the blockchain. The document itself is never made public, preserving privacy while guaranteeing tamper detection.</p>
+            </div>
+          </div>
+
+          <div class="faq-item" data-aos="fade-up">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              Why is MetaMask required only for issuing?
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+              <p>Issuing writes new state data onto the blockchain, which requires cryptographic wallet signing and gas fees. In contrast, verifying is a read-only operation and is completely free without requiring a wallet.</p>
+            </div>
+          </div>
+
+          <div class="faq-item" data-aos="fade-up">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              What document file types are supported?
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+              <p>PDF, PNG, JPG, and JPEG files are supported. Because verification checks raw byte hashes, any file format can be cryptographically matched.</p>
+            </div>
+          </div>
+
+          <div class="faq-item" data-aos="fade-up">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              Can certificate records be altered or deleted?
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+              <p>No. Once a block is confirmed on Ethereum, the hash record is immutable. While an issuer can revoke a certificate, the audit trail of the original issuance remains permanently visible.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Support Section -->
+  <section class="py-5" id="contact" style="background-color: var(--black-bg);">
+    <div class="container">
+      <div class="text-center mb-5" data-aos="fade-up">
+        <div class="status-badge status-online">
+          <i class="fas fa-circle me-2" style="font-size: 0.6rem;"></i> Technical Desk Available
+        </div>
+        <h2 class="section-title">Contact Support</h2>
+        <p class="section-subtitle">Reach out directly for specialized technical assistance</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="contact-card">
+            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+            <h5 class="fw-bold text-light">Email Helpdesk</h5>
+            <p class="text-secondary small mb-3">Direct assistance for protocol and contract questions</p>
+            <a href="mailto:support@secure-cert.io" class="contact-link">support@secure-cert.io</a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="contact-card">
+            <div class="contact-icon"><i class="fab fa-github"></i></div>
+            <h5 class="fw-bold text-light">Developer Issues</h5>
+            <p class="text-secondary small mb-3">Report contract anomalies or request system features</p>
+            <a href="#" class="contact-link">GitHub Repository</a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+          <div class="contact-card">
+            <div class="contact-icon"><i class="fas fa-terminal"></i></div>
+            <h5 class="fw-bold text-light">Smart Contract</h5>
+            <p class="text-secondary small mb-3">Verify contract addresses and inspect method ABIs</p>
+            <a href="contract_info.html" class="contact-link">Contract Info Interface</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="custom-footer mt-auto">
+    <div class="container">
+      <div class="row align-items-center gy-3">
+        <div class="col-md-6 text-center text-md-start">
+          <span class="gradient-text fw-bold fs-5">SECURE-Cert</span>
+          <p class="text-secondary small mb-0 mt-1">Documentation and Support Desk</p>
+        </div>
+        <div class="col-md-6 text-center text-md-end">
+          <p class="footer-copyright mb-0">&copy; 2026 SECURE-Cert. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 800, once: true });
+
+    // FAQ Accordion Toggle
+    function toggleFaq(button) {
+      const answer = button.nextElementSibling;
+      const isActive = button.classList.contains('active');
+
+      document.querySelectorAll('.faq-question').forEach(q => {
+        q.classList.remove('active');
+        q.nextElementSibling.classList.remove('active');
+      });
+
+      if (!isActive) {
+        button.classList.add('active');
+        answer.classList.add('active');
+      }
+    }
+
+    // Auto-open first FAQ on load
+    document.addEventListener('DOMContentLoaded', () => {
+      const firstFaq = document.querySelector('.faq-question');
+      if (firstFaq) toggleFaq(firstFaq);
+    });
+
+    // In-Page Interactive Search
+    const searchInput = document.getElementById('helpSearch');
+    const searchResults = document.getElementById('searchResults');
+
+    const searchData = [
+      { title: 'How to Issue Certificate', desc: 'Detailed steps for hashing and smart contract registration', target: '#tutorial-issue' },
+      { title: 'How to Verify Certificate', desc: 'Guide to auditing documents against ledger hashes', target: '#tutorial-verify' },
+      { title: 'MetaMask Setup for Sepolia', desc: 'Wallet configuration and acquiring testnet gas', target: '#metamask-setup' },
+      { title: 'Smart Contract Details', desc: 'View contract address, ABI, and testnet explorer links', target: 'contract_info.html' },
+      { title: 'FAQ & Architecture', desc: 'Why MetaMask is needed and supported file extensions', target: '#faq' },
+      { title: 'Support & Helpdesk', desc: 'Direct contact channels for technical help', target: '#contact' }
+    ];
+
+    searchInput.addEventListener('input', function() {
+      const query = this.value.toLowerCase().trim();
+      if (query.length < 2) {
+        searchResults.style.display = 'none';
+        return;
+      }
+
+      const matches = searchData.filter(item =>
+        item.title.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query)
+      );
+
+      if (matches.length > 0) {
+        searchResults.innerHTML = matches.map(item => `
+          <div class="search-result-item" onclick="handleNavigation('${item.target}')">
+            <div class="search-result-title">${item.title}</div>
+            <div class="search-result-desc">${item.desc}</div>
+          </div>
+        `).join('');
+      } else {
+        searchResults.innerHTML = '<div class="p-2 text-secondary small">No topics matched your search.</div>';
+      }
+      searchResults.style.display = 'block';
+    });
+
+    function handleNavigation(target) {
+      searchResults.style.display = 'none';
+      searchInput.value = '';
+
+      if (target.startsWith('#')) {
+        const el = document.querySelector(target);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.location.href = target;
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+        searchResults.style.display = 'none';
+      }
+    });
+
+    // Copy tutorial steps on click
+    document.querySelectorAll('.tutorial-steps li').forEach(step => {
+      step.addEventListener('click', function() {
+        const text = this.textContent.trim();
+        navigator.clipboard.writeText(text).then(() => {
+          const original = this.innerHTML;
+          this.innerHTML = '<i class="fas fa-check text-success"></i> <span class="text-success">Step copied to clipboard!</span>';
+          setTimeout(() => { this.innerHTML = original; }, 1800);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
